@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=1]
+[gd_scene load_steps=9 format=1]
 
 [ext_resource path="res://shower.gd" type="Script" id=1]
 [ext_resource path="res://bullets.gd" type="Script" id=2]
-[ext_resource path="res://Spaceship-PNG-Free-Download-420x231.png" type="Texture" id=3]
+[ext_resource path="res://spaceship-1.png" type="Texture" id=3]
 [ext_resource path="res://face_sad.png" type="Texture" id=4]
+[ext_resource path="res://player_sprite.gd" type="Script" id=5]
+[ext_resource path="res://space.png" type="Texture" id=6]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -40,15 +42,40 @@ angular_damp = 1.0
 
 [node name="sprite" type="AnimatedSprite" parent="player"]
 
-transform/scale = Vector2( 0.5, 0.5 )
 frames = SubResource( 2 )
 animation = "default"
+flip_h = true
+script/script = ExtResource( 5 )
 
 [node name="collision" type="CollisionShape2D" parent="player"]
 
 shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+layer = -1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+scroll/offset = Vector2( 0, 0 )
+scroll/base_offset = Vector2( 0, 0 )
+scroll/base_scale = Vector2( 1, 1 )
+scroll/limit_begin = Vector2( 0, 0 )
+scroll/limit_end = Vector2( 0, 0 )
+scroll/ignore_camera_zoom = false
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+
+motion/scale = Vector2( 1, 1 )
+motion/offset = Vector2( 0, 0 )
+motion/mirroring = Vector2( 0, 0 )
+
+[node name="space-background" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+
+transform/pos = Vector2( 511.164, 301.815 )
+texture = ExtResource( 6 )
 
 [connection signal="body_enter_shape" from="player" to="." method="_on_player_body_enter_shape"]
 

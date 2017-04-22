@@ -8,6 +8,12 @@ extends Node2D
 const BULLET_COUNT = 500
 const SPEED_MIN = 20
 const SPEED_MAX = 50
+const PLANETS = [preload("res://blue-planet.png"), 
+                 preload("res://gray-planet.png"), 
+                 preload("res://orange-planet.png"),
+                 preload("res://burning-planet.png"),
+                 preload("res://ice-planet.png"),
+                 preload("res://magneta-planet.png")]
 
 var bullets = []
 var shape
@@ -18,14 +24,15 @@ class Bullet:
 	var pos = Vector2()
 	var speed = 1.0
 	var body = RID()
-
+	var texture = PLANETS[rand_range(0, PLANETS.size())]
+	var planet_size = rand_range(32, 62)
+	
 
 func _draw():
-	var t = preload("res://fusina.png")
-	t.set_size_override(Vector2(32, 32))
-	var tofs = -t.get_size()*0.5
 	for b in bullets:
-		draw_texture(t, b.pos + tofs)
+		var tofs = -b.texture.get_size()*0.5
+		b.texture.set_size_override(Vector2(b.planet_size, b.planet_size))
+		draw_texture(b.texture, b.pos + tofs)
 
 
 func _process(delta):
