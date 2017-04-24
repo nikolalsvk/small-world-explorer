@@ -1,16 +1,42 @@
-[gd_scene load_steps=9 format=1]
+[gd_scene load_steps=15 format=1]
 
 [ext_resource path="res://shower.gd" type="Script" id=1]
 [ext_resource path="res://bullets.gd" type="Script" id=2]
-[ext_resource path="res://spaceship-1.png" type="Texture" id=3]
-[ext_resource path="res://face_sad.png" type="Texture" id=4]
+[ext_resource path="res://spaceship_chill.png" type="Texture" id=3]
+[ext_resource path="res://spaceship_warning.png" type="Texture" id=4]
 [ext_resource path="res://player_sprite.gd" type="Script" id=5]
 [ext_resource path="res://space.png" type="Texture" id=6]
+[ext_resource path="res://space_travel_song.ogg" type="AudioStream" id=7]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="ConvexPolygonShape2D" id=3]
 
 custom_solver_bias = 0.0
-radius = 14.0
+points = Vector2Array( 35.3455, 0.0416298, 61.5459, 3.74225, 57.8453, 11.2915, 47.6316, 14.8441, 17.2865, 16.7684, 6.18466, -0.254421 )
+
+[sub_resource type="ConvexPolygonShape2D" id=4]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -56.8739, -13.5767, -60.4265, -23.9384, -49.7687, -25.7147, -33.338, -15.649, -30.6735, 21.5052, -33.338, 22.9855 )
+
+[sub_resource type="ConvexPolygonShape2D" id=5]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -35.4103, 24.3177, -46.3641, 27.2782, -50.6569, 25.5019, -57.17, 22.5414, -53.0253, 16.1763, -33.338, 22.9855 )
+
+[sub_resource type="ConvexPolygonShape2D" id=6]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -7.43362, -8.09974, 6.18466, -0.254421, 17.2865, 16.7684, 12.1057, 19.877, 1.29984, 21.2092, -30.6735, 21.5052, -23.4203, -11.6523 )
+
+[sub_resource type="ConvexPolygonShape2D" id=7]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -33.338, -15.649, -23.4203, -11.6523, -30.6735, 21.5052 )
+
+[sub_resource type="ConvexPolygonShape2D" id=8]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -59.5384, 11.1435, -59.9824, -10.7642, -56.8739, -13.5767, -33.338, 22.9855, -53.0253, 16.1763 )
 
 [sub_resource type="SpriteFrames" id=2]
 
@@ -31,10 +57,26 @@ script/script = ExtResource( 2 )
 
 [node name="player" type="Area2D" parent="."]
 
+transform/scale = Vector2( 0.5, 0.5 )
 input/pickable = true
-shapes/0/shape = SubResource( 1 )
+shapes/0/shape = SubResource( 3 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
+shapes/1/shape = SubResource( 4 )
+shapes/1/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/1/trigger = false
+shapes/2/shape = SubResource( 5 )
+shapes/2/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/2/trigger = false
+shapes/3/shape = SubResource( 6 )
+shapes/3/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/3/trigger = false
+shapes/4/shape = SubResource( 7 )
+shapes/4/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/4/trigger = false
+shapes/5/shape = SubResource( 8 )
+shapes/5/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/5/trigger = false
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
@@ -47,11 +89,12 @@ animation = "default"
 flip_h = true
 script/script = ExtResource( 5 )
 
-[node name="collision" type="CollisionShape2D" parent="player"]
+[node name="collision" type="CollisionPolygon2D" parent="player"]
 
-shape = SubResource( 1 )
+build_mode = 0
+polygon = Vector2Array( -46.3641, 27.2782, -50.6569, 25.5019, -57.17, 22.5414, -53.0253, 16.1763, -59.5384, 11.1435, -59.9824, -10.7642, -56.8739, -13.5767, -60.4265, -23.9384, -49.7687, -25.7147, -33.338, -15.649, -23.4203, -11.6523, -7.43362, -8.09974, 6.18466, -0.254421, 35.3455, 0.0416298, 61.5459, 3.74225, 57.8453, 11.2915, 47.6316, 14.8441, 17.2865, 16.7684, 12.1057, 19.877, 1.29984, 21.2092, -30.6735, 21.5052, -33.338, 22.9855, -35.4103, 24.3177 )
+shape_range = Vector2( 0, 5 )
 trigger = false
-_update_shape_index = 0
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -76,6 +119,17 @@ motion/mirroring = Vector2( 0, 0 )
 
 transform/pos = Vector2( 511.164, 301.815 )
 texture = ExtResource( 6 )
+
+[node name="StreamPlayer" type="StreamPlayer" parent="."]
+
+stream/stream = ExtResource( 7 )
+stream/play = false
+stream/loop = true
+stream/volume_db = 0.0
+stream/autoplay = true
+stream/paused = false
+stream/loop_restart_time = 0.0
+stream/buffering_ms = 500
 
 [connection signal="body_enter_shape" from="player" to="." method="_on_player_body_enter_shape"]
 

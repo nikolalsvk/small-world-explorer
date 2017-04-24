@@ -6,6 +6,7 @@ var touching = 0
 
 func _input(event):
 	if (event.type == InputEvent.MOUSE_MOTION):
+		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 		get_node("player").set_pos(event.pos - Vector2(0, 16))
 
 

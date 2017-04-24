@@ -7,7 +7,7 @@ extends Node2D
 # Member variables
 const BULLET_COUNT = 500
 const SPEED_MIN = 20
-const SPEED_MAX = 50
+const SPEED_MAX = 60
 const PLANETS = [preload("res://blue-planet.png"), 
                  preload("res://gray-planet.png"), 
                  preload("res://orange-planet.png"),
@@ -40,7 +40,7 @@ func _process(delta):
 	var mat = Matrix32()
 	for b in bullets:
 		b.pos.x -= b.speed*delta
-		if (b.pos.x < -30):
+		if (b.pos.x < -300):
 			b.pos.x += width
 		mat.o = b.pos
 		
@@ -50,18 +50,18 @@ func _process(delta):
 
 
 func _ready():
-	shape = Physics2DServer.shape_create(Physics2DServer.SHAPE_CIRCLE)
-	Physics2DServer.shape_set_data(shape, 8) # Radius
-	
 	for i in range(BULLET_COUNT):
 		var b = Bullet.new()
 		b.speed = rand_range(SPEED_MIN, SPEED_MAX)
 		b.body = Physics2DServer.body_create(Physics2DServer.BODY_MODE_KINEMATIC)
 		Physics2DServer.body_set_space(b.body, get_world_2d().get_space())
+		
+		shape = Physics2DServer.shape_create(Physics2DServer.SHAPE_CIRCLE)
+		Physics2DServer.shape_set_data(shape, b.planet_size*0.5) # Radius
 		Physics2DServer.body_add_shape(b.body, shape)
 		
-		b.pos = Vector2(get_viewport_rect().size * Vector2(randf()*2.0, randf())) # Twice as long
-		b.pos.x += get_viewport_rect().size.x # Start outside
+		b.pos = Vector2(get_viewport_rect().size * Vector2(randf()*6.0, randf())) # Spread planets
+		b.pos.x += get_viewport_rect().size.x # Start outside the viewport
 		var mat = Matrix32()
 		mat.o = b.pos
 		Physics2DServer.body_set_state(b.body, Physics2DServer.BODY_STATE_TRANSFORM, mat)
